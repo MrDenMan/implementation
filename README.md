@@ -1,2 +1,2 @@
-# implementation
-Kraulin Denis
+# designed_app
+

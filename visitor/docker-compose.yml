@@ -1,0 +1,21 @@
+version: '3.6'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/usr/src
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: postgres:11.5
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  postgres:

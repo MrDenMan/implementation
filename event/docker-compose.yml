@@ -1,0 +1,25 @@
+version: '3' 
+services: 
+  app:  
+    build: . 
+    command: rails s -b 0.0.0.0  
+    volumes: 
+      - .:/usr/src 
+    ports: 
+      - "3000:3000"
+
+rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+      - 15673:15672
+    volumes:
+      - rabbit:/var/lib/rabbitmq
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis:/data
+
+volumes:
+  rabbit:
+  redis:

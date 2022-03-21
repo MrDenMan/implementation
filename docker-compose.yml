@@ -1,0 +1,56 @@
+version: '3' 
+services: 
+  event:  
+    build: ./event
+    command: rails s -b 0.0.0.0  
+    volumes: 
+      - ./event/:/usr/src 
+    ports: 
+      - "3000:3000"
+  journal:  
+    build: ./journal
+    command: rails s -b 0.0.0.0  
+    volumes: 
+      - ./journal/:/usr/src 
+    ports: 
+      - "3001:3001"
+    depends_on:
+      - rabbitmq
+  tickets:  
+    build: ./tickets
+    command: rails s -b 0.0.0.0  
+    volumes: 
+      - ./tickets/:/usr/src 
+    ports: 
+      - "3002:3002"
+  visitor:  
+    build: ./visitor 
+    volumes: 
+      - ./visitor/:/usr/src 
+    ports: 
+      - "3003:3003"
+    depends_on:
+      - db
+  db:
+    image: postgres:11.5
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+      - 15672:15672
+    volumes:
+      - rabbit:/var/lib/rabbitmq
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis:/data
+volumes:
+  rabbit:
+  redis:
+  postgres:
